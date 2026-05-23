@@ -1,6 +1,6 @@
 ---
 name: memory-update-proposer
-description: Propose and safely write user-confirmed project memory to project-memory.md. This skill is strictly user-initiated. It is triggered only when the user explicitly invokes it via a slash command (e.g. /memory) to propose a memory update, organize memory, or save preferences. The assistant must never proactively prompt or suggest updating the memory during ordinary conversation.
+description: Propose and safely write user-confirmed project memory. User-initiated; AI must never trigger proactively.
 ---
 
 # Memory Update Proposer
@@ -11,11 +11,11 @@ Core rule: do not write memory until the user has confirmed the exact final text
 
 ## Trigger Policy
 
-This skill is strictly user-initiated and is invoked when the user explicitly runs a slash command (such as /memory or /propose-memory).
+This skill is strictly user-initiated.
 
 The assistant must never proactively prompt, suggest, or offer memory updates to the user under any circumstances during normal conversation, even if the user states a recurring rule (e.g., "以后都这样"), changes a default configuration, or corrects assistant behavior.
 
-All memory updates are handled exclusively in response to the user's explicit slash command trigger.
+The assistant must never load or suggest this skill unless the user explicitly requests a memory update.
 
 ## What Belongs In Memory
 
@@ -36,7 +36,7 @@ Reject or avoid writing:
 ## Execution Workflow
 
 1. Identify and Classify Candidates
-Inspect the candidate durable memory and check project-memory.md (if it exists) to classify entries:
+Inspect the candidate durable memory and check project-memory.md (if it exists) to classify entries. Note: If the user requests a memory update for the first time with no specific content to record, this is considered an initialization action — no entries need to be classified.
 - New Entry (新增): A completely new rule.
 - Update (更新): A modification or overriding of an existing rule. Do not simply append contradictory rules.
 - Redundant (冗余): An exact duplicate of an existing rule. Quietly skip it and briefly notify the user.
@@ -50,7 +50,9 @@ Wait for the user's explicit confirmation using clear language such as "确认",
 4. Execute Direct File Editing
 After explicit confirmation, edit project-memory.md.
 - Target only project-memory.md. Do not modify AGENTS.md or other instruction files.
-- If project-memory.md does not exist, create it with "# Project Memory" followed by the confirmed entries.
+- If project-memory.md does not exist:
+  - If the user provided confirmed entries, create it with "# Project Memory" followed by the entries.
+  - If the user has no entries (initialization only), create an empty document with just "# Project Memory".
 - For additions, append them to the end of the file.
 - For updates, locate the old target lines and replace them precisely.
 - Preserve all other existing memory, do not introduce unconfirmed facts, and do not write temporary task states.
