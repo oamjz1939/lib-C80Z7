@@ -1,6 +1,6 @@
 ---
 name: python-build
-description: Write and modify Python code with goal-driven logic. Use when creating or updating scripts, fixing bugs, changing logic, adding validation, or implementing Python automation.
+description: Write and modify Python code. Only used when the user explicitly states such as: "Use python-build".
 ---
 
 ## Overview
@@ -13,42 +13,43 @@ Help users create or modify Python scripts. Prioritize clear logic, minimal chan
    - State key assumptions clearly; if multiple reasonable interpretations exist, present them first.
    - If the requirement is unclear or affects the implementation direction, stop and ask the user.
 
-2. **Goal-Driven Execution and Verification**
-   - Convert requirements into verifiable goals.
-   - For multi-step tasks, first output a brief plan using this format: `1. [Step] → verify: [terminal command or check]`.
-   - After modifying code, automatically run the necessary tests or commands to verify the result.
-
 3. **Minimal Changes**
+   
    - Change only the code required to satisfy the request.
    - Do not perform unrelated refactoring, renaming, formatting, or style cleanup.
-
+   
 4. **Python Code Standards**
-   - Extract file paths, directories, and critical configuration variables into top-level constants using `UPPER_SNAKE_CASE`; path sources must be confirmed item by item according to the “File and Directory Path Handling” rules.
+   
+   - Extract critical configuration variables into top-level constants using `UPPER_SNAKE_CASE`; path sources must be confirmed item by item according to the “File and Directory Path Handling” rules.
    - Add a brief Chinese comment explaining the purpose of each constant.
    - Immediately after every function definition, add a multi-line Chinese docstring explaining every parameter and its role.
    - Avoid clever syntax. Prefer clear `if-else` blocks, standard loops, and explicit logic.
-
+   
 5. **File and Directory Path Handling**
+   
    - For every file or directory accessed by the script, ask the user which path handling method should be used. Do not decide silently.
-   - Only two path handling methods are allowed:
-
+   - Each path constant must have a brief Chinese comment explaining its purpose.
+   - Only three path handling methods are allowed:
+   
    **Method 1: Environment Variable Path**
+   
    - Use the fixed environment variable name: `ENV_VAR_NAME = "my_script_env_code79"`.
    - Read the base path with `os.environ.get(ENV_VAR_NAME)`.
    - If the environment variable is missing, empty, or the target file/directory cannot be found, raise a clear error.
    - Convert the path to an absolute path with `Path(env_path).expanduser().resolve()`.
    - Use this when the user wants the path to be externally configurable and the script to run across machines or directories.
-
+   
    **Method 2: Script Directory Path**
-   - Use `os.path.dirname(os.path.abspath(__file__))` to get the script directory.
+   - Use `Path(__file__).resolve().parent` to get the script directory.
    - Access the target file or directory under the script directory.
    - Do not rely on the runtime working directory.
    - Use this when the target file or directory is distributed with the script or fixed near the script location.
-
-   - If the script accesses multiple files or directories, ask the user item by item whether each path should use the “Environment Variable Path” or the “Script Directory Path”.
+   
+   **Method 3: Hardcoded Raw String Path**
+   
+   - Define the full path as a top-level `UPPER_SNAKE_CASE` constant using `Path` with a Python raw string literal, such as `INPUT_FILE_PATH = Path(r"C:\path\to\input.csv")`.
    - Path-related constants must still be defined at the top of the script using `UPPER_SNAKE_CASE`.
-   - Each path constant must have a brief Chinese comment explaining its purpose.
-
+   
 6. **LLM Access Convention**
    - When the script needs to access an LLM, use the OpenAI Python library.
    - `base_url` and `api_key` must be read from environment variables and must not be hardcoded.
@@ -58,18 +59,17 @@ Help users create or modify Python scripts. Prioritize clear logic, minimal chan
    - Hardcode the fixed model name as a top-level constant:
      - `LLM_MODEL = "deepseek-v4-flash"`
    - If an environment variable is missing or empty, raise a clear error.
-   - Related constants must be defined at the top of the script with brief Chinese comments explaining their purpose.
-
+   
 7. **Language Requirements**
    - All code comments, docstrings, parameter explanations, and descriptive text inside generated code must be written in professional, concise Chinese.
 
 ## Code Examples
 
-### File Path Example: Environment Variable Path
+### File Path Handling Examples
 
 ```python
-import os
 from pathlib import Path
+import os
 
 # 基础路径环境变量名
 ENV_VAR_NAME = "my_script_env_code79"
@@ -77,11 +77,28 @@ ENV_VAR_NAME = "my_script_env_code79"
 # 输入文件名称
 INPUT_FILE_NAME = "input.csv"
 
+# 脚本所在目录
+SCRIPT_DIR = Path(__file__).resolve().parent
 
-def get_input_file_path():
+# 输入文件完整路径
+INPUT_FILE_PATH = Path(r"C:\data\input.csv")
+
+
+def validate_input_file_path(input_file_path):
     """
     参数说明：
-    - 无参数：从环境变量读取基础路径，并返回输入文件的绝对路径。
+    - input_file_path：需要验证是否存在的输入文件路径。
+    """
+    if not input_file_path.exists():
+        raise FileNotFoundError(f"未找到输入文件：{input_file_path}")
+
+    return input_file_path
+
+
+def get_input_file_path_from_env():
+    """
+    参数说明：
+    - 无参数：从环境变量读取基础路径，并返回输入文件路径。
     """
     env_path = os.environ.get(ENV_VAR_NAME)
 
@@ -91,36 +108,27 @@ def get_input_file_path():
     base_path = Path(env_path).expanduser().resolve()
     input_file_path = base_path / INPUT_FILE_NAME
 
-    if not input_file_path.exists():
-        raise FileNotFoundError(f"未找到输入文件：{input_file_path}")
-
-    return input_file_path
-```
-
-### File Path Example: Script Directory Path
-
-```python
-import os
-from pathlib import Path
-
-# 脚本所在目录
-SCRIPT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
-
-# 输入文件名称
-INPUT_FILE_NAME = "input.csv"
+    return validate_input_file_path(input_file_path)
 
 
-def get_input_file_path():
+def get_input_file_path_from_script_dir():
     """
     参数说明：
-    - 无参数：根据脚本所在目录返回输入文件的绝对路径。
+    - 无参数：根据脚本所在目录返回输入文件路径。
     """
     input_file_path = SCRIPT_DIR / INPUT_FILE_NAME
 
-    if not input_file_path.exists():
-        raise FileNotFoundError(f"未找到输入文件：{input_file_path}")
+    return validate_input_file_path(input_file_path)
 
-    return input_file_path
+
+def get_input_file_path_from_hardcoded_path():
+    """
+    参数说明：
+    - 无参数：根据代码中固定的 raw string 路径返回输入文件路径。
+    """
+    input_file_path = INPUT_FILE_PATH
+
+    return validate_input_file_path(input_file_path)
 ```
 
 ### LLM Access Example
