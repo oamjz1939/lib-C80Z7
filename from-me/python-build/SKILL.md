@@ -1,6 +1,6 @@
 ---
 name: python-build
-description: Write and modify Python code. Only used when the user explicitly states such as: "Use python-build".
+description: Write and modify Python code. Only used when the user explicitly states such as Use python-build.
 ---
 
 ## Overview
@@ -13,19 +13,19 @@ Help users create or modify Python scripts. Prioritize clear logic, minimal chan
    - State key assumptions clearly; if multiple reasonable interpretations exist, present them first.
    - If the requirement is unclear or affects the implementation direction, stop and ask the user.
 
-3. **Minimal Changes**
+2. **Minimal Changes**
    
    - Change only the code required to satisfy the request.
    - Do not perform unrelated refactoring, renaming, formatting, or style cleanup.
    
-4. **Python Code Standards**
+3. **Python Code Standards**
    
    - Extract critical configuration variables into top-level constants using `UPPER_SNAKE_CASE`; path sources must be confirmed item by item according to the “File and Directory Path Handling” rules.
    - Add a brief Chinese comment explaining the purpose of each constant.
    - Immediately after every function definition, add a multi-line Chinese docstring explaining every parameter and its role.
    - Avoid clever syntax. Prefer clear `if-else` blocks, standard loops, and explicit logic.
    
-5. **File and Directory Path Handling**
+4. **File and Directory Path Handling**
    
    - For every file or directory accessed by the script, ask the user which path handling method should be used. Do not decide silently.
    - Each path constant must have a brief Chinese comment explaining its purpose.
@@ -50,7 +50,7 @@ Help users create or modify Python scripts. Prioritize clear logic, minimal chan
    - Define the full path as a top-level `UPPER_SNAKE_CASE` constant using `Path` with a Python raw string literal, such as `INPUT_FILE_PATH = Path(r"C:\path\to\input.csv")`.
    - Path-related constants must still be defined at the top of the script using `UPPER_SNAKE_CASE`.
    
-6. **LLM Access Convention**
+5. **LLM Access Convention**
    - When the script needs to access an LLM, use the OpenAI Python library.
    - `base_url` and `api_key` must be read from environment variables and must not be hardcoded.
    - Use the following fixed environment variable names:
@@ -60,7 +60,7 @@ Help users create or modify Python scripts. Prioritize clear logic, minimal chan
      - `LLM_MODEL = "deepseek-v4-flash"`
    - If an environment variable is missing or empty, raise a clear error.
    
-7. **Language Requirements**
+6. **Language Requirements**
    - All code comments, docstrings, parameter explanations, and descriptive text inside generated code must be written in professional, concise Chinese.
 
 ## Code Examples
