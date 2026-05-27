@@ -7,7 +7,7 @@ Create a Git commit:
 
 - Commit on the current branch; do not create a new branch.
 - Use the existing Git configuration.
-- Use concise, conventional English commit messages, for example: `feat(auth): add login validation`.
+- `type(scope): subject`
 - Focus on functional and behavioral changes.
 - Do not describe implementation details.
 - Use imperative verbs.
