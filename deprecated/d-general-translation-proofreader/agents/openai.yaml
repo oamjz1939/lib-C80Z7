@@ -1,4 +1,0 @@
-interface:
-  display_name: "General Translation Proofreader"
-  short_description: "Proofread labeled Chinese-to-English drafts."
-  default_prompt: "Use $general-translation-proofreader to proofread an English translation pasted with [REFERENCE], [SOURCE_ZH], and [DRAFT_EN] sections."
