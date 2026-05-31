@@ -24,21 +24,19 @@ Every CLI must start with this title-block style:
 │
 ```
 
-For each single-choice prompt, ask the user which behavior they want:
-
-- `questionary.rawselect()`: numbered list; pressing a number immediately selects and returns.
-- `questionary.select()`: arrow keys move; Enter confirms; may use `use_shortcuts=True`.
-
 ## Components
 
 Use:
 
 - `questionary.text()` for text input.
-- `questionary.select()` for normal single choice.
-- `questionary.rawselect()` for immediate numeric choice.
+- `questionary.select()` with `(..., use_shortcuts=True, use_arrow_keys=True, ...)` for single choice. Use 1 to 9 as shortcuts.
 - `questionary.checkbox()` only when multiple choices are truly needed.
-- `questionary.confirm()` for yes/no decisions.
+- `questionary.confirm()` with `(..., auto_enter=True, ...)` for yes/no decisions.
 - `questionary.press_any_key_to_continue()` only when a pause is truly useful.
+
+Do not use:
+
+- `questionary.rawselect()` for single choice.
 
 ## Prompt Style
 
