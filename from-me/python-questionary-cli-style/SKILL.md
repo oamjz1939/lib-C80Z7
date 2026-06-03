@@ -31,7 +31,7 @@ Use:
 - `questionary.text()` for text input.
 - `questionary.select()` with `(..., use_shortcuts=True, use_arrow_keys=True, ...)` for single choice. Use 1 to 9 as shortcuts.
 - `questionary.checkbox()` only when multiple choices are truly needed.
-- `questionary.confirm()` with `(..., auto_enter=True, ...)` for yes/no decisions.
+- `questionary.confirm()` with `(..., auto_enter=False, ...)` for yes/no decisions.
 - `questionary.press_any_key_to_continue()` only when a pause is truly useful.
 
 Do not use:
