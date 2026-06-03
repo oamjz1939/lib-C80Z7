@@ -1,7 +1,0 @@
-interface:
-  display_name: "Memory Update Proposer"
-  short_description: "Propose and write confirmed project memory"
-  default_prompt: "Use $memory-update-proposer to turn durable project knowledge into confirmed entries in project-memory.md."
-
-policy:
-  allow_implicit_invocation: false
