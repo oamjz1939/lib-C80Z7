@@ -1,0 +1,7 @@
+interface:
+  display_name: "Qian Yu Write"
+  short_description: "多 Agent 写作任务的分析、起草、审校与定稿流程"
+  default_prompt: "使用 $qian-yu-write 帮我完成一次有分析、起草、批评与定稿的写作任务。"
+
+policy:
+  allow_implicit_invocation: true
