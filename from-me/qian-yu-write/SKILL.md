@@ -66,6 +66,10 @@ description: 用于作业、个人陈述、申请文书、报告、邮件、简�
 
 ## Subagent Injection Contract
 
+按以下优先级绑定子 Agent 提示词：
+
+### 1. 命名 Agent 或后端注册表
+
 优先使用以下形式的后端接口：
 
 ```text
@@ -73,6 +77,26 @@ run_writing_agent(agent_name, task_object)
 ```
 
 其中 `agent_name` 只能是 `analyst`、`architect`、`writer`、`critic` 或 `editor`；运行时根据名称绑定对应的 `subagents/*.md`，协调器只传递 `task_object`。
+
+### 2. 路径绑定
+
+如果宿主工具支持 `prompt_path`、`system_prompt_file` 或等价字段，可以只传递相对于本 Skill 根目录的提示词路径：
+
+```text
+run_writing_agent(
+  agent_name="critic",
+  prompt_path="subagents/critic.md",
+  task_object={...}
+)
+```
+
+运行时必须在子 Agent 的 system prompt 层读取该文件，再把 `task_object` 作为任务输入。优先使用相对路径，不要写死机器相关的绝对路径，例如 `C:\\...\\qian-yu-write\\subagents\\critic.md`。
+
+路径绑定可以减少提示词进入协调器上下文的机会，但路径本身不是安全边界。只有当宿主工具明确把文件内容加载到子 Agent 的 system prompt 层时，才将其视为可靠的提示词注入。
+
+如果宿主工具支持本地文件附件但不支持 `prompt_path`，将对应的 `subagents/*.md` 作为子 Agent 的 system-level 文件输入；不要只在普通任务文本中写“请读取这个文件”。
+
+### 3. 降级模式
 
 不要使用要求协调器自行拼接完整 system prompt 的接口，例如：
 
