@@ -1,6 +1,6 @@
 # Qian Yu Translate Style Guide
 
-本文件是 `qian-yu-translate` 所有子代理共享的唯一风格标准。每个角色读取并遵循本文件；协调器只传路径，不复制、不复述本文件内容。
+本文件是 `qian-yu-translate` 所有子代理共享的唯一风格标准。每个角色读取并遵循本文件。
 
 ## 总目标
 
@@ -10,7 +10,7 @@
 
 1. **忠实与结构**：尽量贴合中文原文的结构和句子顺序，忠实传达意思。不要为了“地道”大幅重组句子，也不要逐字硬译。允许一点轻微的中式英语痕迹；不用刻意制造，也不用刻意避开。
 2. **句式**：一个句子只承载一个核心信息。优先用简单句和并列句，把长句拆开。
-3. **衔接**：用 Also、But、So、What I mean is 等真实自然的词衔接，或靠语义自然过渡。不堆砌连接词。
+3. **衔接**：用 Also、But、So 等真实自然的词衔接，或靠语义自然过渡。不堆砌连接词。偏口语的 What I mean is 只用于口语场景。
 4. **标点**：全程不用破折号；只在确实有必要时使用冒号。优先用句号把话断开。
 5. **修辞**：少用比喻、拟人等修辞。保持平实，只做直接表达。
 6. **词汇**：以雅思（IELTS）写作和口语高频词为主，选词准确自然，不过度学术，也不用俚语。计算机、金融等领域用业内公认的标准术语。
@@ -22,7 +22,7 @@
 ### 禁用（出现即替换）
 
 - Moreover, Furthermore, Nevertheless, Nonetheless, It is worth noting that, It should be noted that, First and foremost
-- delve / delve into, tapestry, testament to, navigate the complexities of, in today's fast-paced world, in an era of rapid change, plays a pivotal role, underscores the importance of, sheds light on, paves the way for, a double-edged sword
+- delve / delve into, tapestry, testament to, navigate the complexities of, in today's fast-paced world, plays a pivotal role, underscores the importance of, sheds light on, paves the way for, a double-edged sword
 
 ### 慎用（除非语境确实需要，否则换简单说法）
 
@@ -38,7 +38,7 @@
 
 - 用词更书面、正式，但仍然一句一意。
 - 不用花哨修辞，不用反问句卖弄。
-- 不用缩写：do not、cannot、it is。
+- 使用不缩写的形式：do not、cannot、it is。
 - 术语按学科规范写。
 
 示例语气：
@@ -84,17 +84,26 @@ Hey, I'm running a bit late. I got held up after class. Can you start dinner wit
 - 是否允许缩写
 - 有没有必须遵守的格式或行文限制
 
-译者严格按这个 custom 档执行。如果分析 Agent 没有给出，就按底色原则执行，并在文末「译名假设（请核对）」中标注这一假设。
+译者严格按这个 custom 档执行。如果分析 Agent 没有给出，就按底色原则执行，并在文末「假设（请核对）」中标注这一假设。
 
 ## 术语与专名
 
 - 领域术语：使用业内公认的标准译法，不自己造词。
-- 专名：优先使用官方英文名或通行译法。拿不准时，先用最通用的译法，并在译文末尾「译名假设（请核对）」中列出，等用户核对。
-- 文化词：按底色原则第 7 条处理，不套英文俗语。
+- 专名：优先使用官方英文名或通行译法；拿不准的进文末「假设（请核对）」清单。
+- 文化词：见底色原则第 7 条。
+
+## 参考材料一致性
+
+当任务提供参考材料文本（`reference_text`）和术语表（`glossary`、`reference_phrases`）时：
+
+- 参考材料里的术语和常用搭配优先于通用译法，逐字沿用，不换同义词。
+- 参考材料用词与底色原则冲突时，参考材料优先，但只限术语和搭配层面；普通表达仍按底色原则。
+- 参考材料中没有的术语，按通用译法处理，并进「假设（请核对）」。
+- 不模仿参考材料的句式、语气或排版，只借用其中的术语和常用搭配。
 
 ## 执行提示（给译者）
 
-- 拿到中文长句，先找自然断点：逗号、分号、转折、因果、并列。每个断点尽量写成一个短句。
+- 拿到中文长句，先找自然断点，尽量拆成短句。
 - 中英文语序不同时，只做最小调整，不大幅搬动句子顺序。
 - 中文的重复或范畴词（如“问题”“情况”“方面”）在英文里冗余时，可省去或合并，但不改变意思。
 - 不补写原文没有的解释、例子或结论。
@@ -103,5 +112,5 @@ Hey, I'm running a bit late. I got held up after class. Can you start dinner wit
 ## 交付格式
 
 - 默认只交付译文正文。
-- 存在不确定的专名或术语时，译文末尾附「译名假设（请核对）」小节；没有则不附。
-- 原文确有歧义且无法按字面保守处理时，用 `[待确认：...]` 标记；否则不要标记。
+- 拿不准分两种处理：专名或术语先用通用译法，收进文末「假设（请核对）」；原文本身有歧义且无法按字面保守处理时，用 `[待确认：...]` 标记。
+- 没有上述情况时，不附假设清单，也不加标记。
