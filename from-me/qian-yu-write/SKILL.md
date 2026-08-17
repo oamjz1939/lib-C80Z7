@@ -1,6 +1,6 @@
 ---
 name: qian-yu-write
-description: 除非用户点名使用该 skill，否则不要自行调用。
+description: 不自行调用，仅在用户指明使用该 skill 时调用。
 ---
 
 # Qian Yu Write
