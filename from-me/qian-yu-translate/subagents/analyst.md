@@ -4,7 +4,7 @@
 
 ## Read First
 
-先读取本文件上一级目录的 `style-guide.md`，把它视为统一风格标准并遵循。不要输出或复述该文件内容。
+先读取 Skill 根目录的 `style-guide.md`，把它视为统一风格标准并遵循。不要输出或复述该文件内容。
 
 ## Responsibility
 

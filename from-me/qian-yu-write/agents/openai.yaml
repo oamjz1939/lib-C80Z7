@@ -4,4 +4,4 @@ interface:
   default_prompt: "使用 $qian-yu-write 帮我分析、检查并修订这份已有草稿。"
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

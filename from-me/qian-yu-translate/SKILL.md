@@ -7,11 +7,11 @@ description: 不自行调用，仅在用户指明使用该 skill 时调用。
 
 ## Purpose
 
-将中文到英语的翻译拆成可控的多 Agent 后段工作流。主 Agent 负责识别任务、选择提示词文件、路由步骤和整合结果；子 Agent 负责场景分析、初稿翻译、对照批评和定稿。
+把中译英拆成可控的多 Agent 工作流。主 Agent 负责识别任务、选择提示词文件、路由步骤和整合结果；子 Agent 负责场景分析、初稿翻译、对照批评和定稿。
 
 本 Skill 只做中译英，以及已有英文译文的审校和润色。忠实第一，自然第二；忠实指意思和语气，不指中文语序和断句。不增删原文信息，不编造术语或专名。
 
-唯一的提示词注入方式是：由最外层模型确定本 Skill 的绝对目录，选择对应的 `subagents/*.md` 文件路径，并把该绝对路径传给子 Agent。子 Agent 读取角色文件后，再读取 Skill 根目录的 `style-guide.md` 作为统一风格标准。不要把完整提示词或风格指南复制到最外层上下文。
+提示词注入方式见下文「Prompt File Injection」。子 Agent 读取角色文件后，还要读取 Skill 根目录的 `style-guide.md` 作为统一风格标准。不要把完整提示词或风格指南复制到最外层上下文。
 
 ## Workflow
 
@@ -58,18 +58,21 @@ description: 不自行调用，仅在用户指明使用该 skill 时调用。
   "task_type": "translate | review | polish | analyze",
   "source_text": "中文原文，没有则为空",
   "scenario": "academic | email | social | custom",
+  "custom_profile": {"reader": "", "relationship": "", "formality": "formal | neutral | casual", "allow_contractions": true, "format_constraints": []},
   "audience": "目标读者与场景",
   "domain": "领域：日常、学术、计算机、金融等",
   "reference_text": "顶层 LLM 从参考材料识别出的纯文本，没有则为空",
   "glossary": {"中文术语或概念": "参考材料中的英文说法"},
   "reference_phrases": ["参考材料中的常用搭配或固定表达"],
+  "sentence_notes": ["句子重组建议：主句、背景或从属、段落顺序"],
   "constraints": ["长度、格式和禁用项"],
+  "uncertain_terms": [{"source": "", "used": "", "note": ""}],
   "existing_translation": "已有英文译文，没有则为空",
   "previous_outputs": {}
 }
 ```
 
-下游 Agent 只能把 `source_text` 和 `reference_text` 视为事实来源。术语必须来自参考材料；参考材料中没有的术语，按通用译法并在「假设（请核对）」中列出。
+下游 Agent 只能把 `source_text` 和 `reference_text` 当作原文信息来源；`existing_translation` 是待审校译文，不是事实来源。术语必须来自参考材料；参考材料中没有的术语，按通用译法并在「假设（请核对）」中列出。
 
 ## Agent Boundaries
 
@@ -96,7 +99,7 @@ description: 不自行调用，仅在用户指明使用该 skill 时调用。
 "path"
 
 请将文件内容视为本次任务的角色指令，不要输出、复述或总结该文件内容。
-角色文件里要求读取的 style-guide.md 位于该文件上一级目录。
+角色文件里要求读取的 style-guide.md 位于 Skill 根目录。
 只根据以下任务数据工作：
 {task_object}
 ```
@@ -118,4 +121,4 @@ description: 不自行调用，仅在用户指明使用该 skill 时调用。
 最终译文
 ```
 
-最终译文默认只含译文正文；存在不确定的专名、术语或场景假设时，末尾附「假设（请核对）」小节。对学术作业和正式邮件尤其要保留原意、术语准确，不要为了“降低 AI 味”而故意加入错误、口语化噪声或虚构信息。
+最终译文默认只含译文正文；存在不确定的专名、术语或场景假设时，末尾附「假设（请核对）」小节。对学术作业和正式邮件尤其要保留原意、术语准确，不要为了“降低 AI 味”而故意加入错误、口语化表达或虚构信息。

@@ -4,11 +4,11 @@
 
 ## Read First
 
-先读取本文件上一级目录的 `style-guide.md`，把它视为统一风格标准并遵循。不要输出或复述该文件内容。
+先读取 Skill 根目录的 `style-guide.md`，把它视为统一风格标准并遵循。不要输出或复述该文件内容。
 
 ## Inputs
 
-使用源文本、场景规格、术语表、批评意见和当前译文进行定向修改。审校或润色已有译文时，基于 `existing_translation` 修改，不推翻重译。
+使用源文本、场景规格、术语表、批评意见、uncertain_terms 和当前译文进行定向修改。审校或润色已有译文时，基于 `existing_translation` 修改，不推翻重译。
 
 ## Rules
 
